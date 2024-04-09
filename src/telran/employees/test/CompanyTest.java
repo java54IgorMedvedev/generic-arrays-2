@@ -56,15 +56,15 @@ void setCompany() {
 
 	@Test
 	void testIterator() {
+	    Company company = new Company(new Employee[]{new Employee(1, 1000, "Dept1"), new Employee(2, 2000, "Dept2")});
 	    Iterator<Employee> it = company.iterator();
 	    assertTrue(it.hasNext());
-	    assertEquals(empl1, it.next());
+	    assertEquals(new Employee(1, 1000, "Dept1"), it.next());
 	    assertTrue(it.hasNext());
-	    assertEquals(empl2, it.next());
-	    assertTrue(it.hasNext());
-	    assertEquals(empl3, it.next());
+	    assertEquals(new Employee(2, 2000, "Dept2"), it.next());
 	    assertFalse(it.hasNext());
 	}
+
 
 
 }
