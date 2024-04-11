@@ -14,9 +14,8 @@ public class Employee implements Comparable<Employee>{
 	}
 	@Override
 	public int compareTo(Employee o) {
-	    return Long.compare(this.id, o.id);
+		return Long.compare(id, o.id);
 	}
-
 	public long getId() {
 		return id;
 	}
@@ -28,15 +27,18 @@ public class Employee implements Comparable<Employee>{
 	}
 	@Override
 	public int hashCode() {
-	    return Objects.hash(id);
+		return Objects.hash(id);
 	}
 	@Override
 	public boolean equals(Object obj) {
-	    if (this == obj) return true;
-	    if (obj == null || getClass() != obj.getClass()) return false;
-	    Employee employee = (Employee) obj;
-	    return id == employee.id;
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		return id == other.id;
 	}
-
 	
 }

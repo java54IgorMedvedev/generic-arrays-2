@@ -19,6 +19,8 @@ private static final int SALARY2 = 2000;
 private static final long ID3 = 125;
 private static final int SALARY3 = 3000;
 private static final String DEPARTMENT2 = "QA";
+private static final long ID4 = 200;
+private static final String DEPARTMENT4 = "Audit";
 Employee empl1 = new Employee(ID1, SALARY1, DEPARTMENT1);
 Employee empl2 = new Employee(ID2, SALARY2, DEPARTMENT1);
 Employee empl3 = new Employee(ID3, SALARY3, DEPARTMENT2);
@@ -30,41 +32,45 @@ void setCompany() {
 	company = new Company(new Employee[] {empl1, empl2, empl3});
 }
 	@Test
-	void testAddEmployee() {
-	    assertThrowsExactly(IllegalStateException.class, () -> company.addEmployee(new Employee(ID1, 5000, "HR")));
+	void testAddEmployee()
+	{
+		Employee empl = new Employee(ID4, SALARY1, DEPARTMENT1);
+		company.addEmployee(empl);
+		assertThrowsExactly(IllegalStateException.class,
+				() -> company.addEmployee(empl));
+		assertThrowsExactly(IllegalStateException.class,
+				() -> company.addEmployee(empl1));
 	}
 
 	@Test
 	void testGetEmployee() {
-	    assertEquals(empl1, company.getEmployee(ID1));
-	    assertNull(company.getEmployee(999)); 
+		assertEquals(empl1, company.getEmployee(ID1));
+		assertNull(company.getEmployee(ID4));
 	}
-
 
 	@Test
 	void testRemoveEmployee() {
-	    assertNotNull(company.removeEmployee(ID1));
-	    assertThrows(NoSuchElementException.class, () -> company.removeEmployee(ID1)); // Повторное удаление
+		assertEquals(empl1, company.removeEmployee(ID1));
+		assertThrowsExactly(NoSuchElementException.class,
+				() -> company.removeEmployee(ID1));
 	}
-
 
 	@Test
 	void testGetDepartmentBudget() {
-	    assertEquals(SALARY1 + SALARY2, company.getDepartmentBudget(DEPARTMENT1));
+		assertEquals(SALARY1 + SALARY2, company.getDepartmentBudget(DEPARTMENT1));
+		assertEquals(0, company.getDepartmentBudget(DEPARTMENT4));
 	}
-
 
 	@Test
 	void testIterator() {
-	    Company company = new Company(new Employee[]{new Employee(1, 1000, "Dept1"), new Employee(2, 2000, "Dept2")});
-	    Iterator<Employee> it = company.iterator();
-	    assertTrue(it.hasNext());
-	    assertEquals(new Employee(1, 1000, "Dept1"), it.next());
-	    assertTrue(it.hasNext());
-	    assertEquals(new Employee(2, 2000, "Dept2"), it.next());
-	    assertFalse(it.hasNext());
+		Employee[] expected = {empl2, empl1, empl3};
+		Iterator<Employee> it = company.iterator();
+		int index = 0;
+		while(it.hasNext()) {
+			assertEquals(expected[index++], it.next());
+		}
+		assertEquals(expected.length, index);
+		assertThrowsExactly(NoSuchElementException.class, it::next);
 	}
-
-
 
 }

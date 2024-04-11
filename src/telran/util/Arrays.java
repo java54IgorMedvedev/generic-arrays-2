@@ -43,19 +43,9 @@ public class Arrays {
 			}
 		}
 	}
-	public static <T extends Comparable<T>> void bubbleSort(T[] array) {
-	    boolean isUnsorted = true;
-	    int length = array.length;
-	    while (isUnsorted) {
-	        length--;
-	        isUnsorted = false;
-	        for (int i = 0; i < length; i++) {
-	            if(array[i].compareTo(array[i+1]) > 0) {
-	                swap(array, i, i + 1);
-	                isUnsorted = true;
-	            }
-	        }
-	    }
+	@SuppressWarnings("unchecked")
+	public static <T> void bubbleSort(T[] array) {
+		bubbleSort(array, (Comparator<T>)Comparator.naturalOrder());
 	}
 	
 	private static <T> void swap(T[] array, int i, int j) {
@@ -113,19 +103,18 @@ public class Arrays {
 	public static <T> T[] copy(T[] array) {
 		return java.util.Arrays.copyOf(array, array.length);
 	}
-	
 	public static <T> T[] insert(T[] array, int index, T element) {
-	    T[] newArray = java.util.Arrays.copyOf(array, array.length + 1);
-	    System.arraycopy(array, 0, newArray, 0, index);
-	    newArray[index] = element;
-	    System.arraycopy(array, index, newArray, index + 1, array.length - index);
-	    return newArray;
+		T[] result = java.util.Arrays.copyOf(array, array.length + 1);
+		System.arraycopy(array, index, result, index + 1, array.length - index);
+		result[index] = element;
+		return result;
 	}
-
-	public static <T> T[] insertSorted(T[] array, T element, Comparator<T> comp) {
-	    int index = java.util.Arrays.binarySearch(array, element, comp);
-	    if (index < 0) index = -(index + 1);
-	    return insert(array, index, element);
+	public static <T> T[] insertSorted(T[] array, T element,
+			Comparator<T> comp) {
+		int index = binarySearch(array, element, comp);
+		if (index < 0) {
+			index = - (index + 1);
+		}
+		return insert(array, index, element);
 	}
-
 }
