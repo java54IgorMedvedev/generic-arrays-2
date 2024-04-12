@@ -1,6 +1,7 @@
 package telran.employees;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -24,7 +25,6 @@ public class Company implements Iterable<Employee>{
 		return index < 0 ? null : employees[index];
 	}
 	public Employee removeEmployee(long id) {
-		//TODO
 		//removes from the company an employee with a given id
 		//if such employee doesn't exist, throw NoSuchElementException
 		//returns reference to being removed employee
@@ -37,16 +37,15 @@ public class Company implements Iterable<Employee>{
 		return result;
 	}
 	public int getDepartmentBudget(String department) {
-		//returns sum of basic salary values for all employees of a given department
-		//if employees of a given department don't exist, returns 0
-		int result = 0;
-		for(Employee empl: employees) {
-			if(empl.getDepartment().equals(department)) {
-				result += empl.getBasicSalary();
-			}
-		}
-		return result;
+	    int result = 0;
+	    for (Employee emp : employees) {
+	        if (emp.getDepartment().equals(department)) {
+	            result += emp.computeSalary();
+	        }
+	    }
+	    return result;
 	}
+
 	public Company(Employee[] employees) {
 		this.employees = Arrays.copy(employees);
 		Arrays.bubbleSort(this.employees);
@@ -56,6 +55,14 @@ public class Company implements Iterable<Employee>{
 		
 		return new CompanyIterator();
 	}
+	public String[] getDepartments() {
+	    HashSet<String> departments = new HashSet<>();
+	    for (Employee emp : employees) {
+	        departments.add(emp.getDepartment());
+	    }
+	    return departments.toArray(new String[0]);
+	}
+
 	private class CompanyIterator implements Iterator<Employee> {
 		int currentIndex = 0;
 		//iterating all employees in the ascending order of the ID values
@@ -72,4 +79,5 @@ public class Company implements Iterable<Employee>{
 		}
 		
 	}
+	
 }
