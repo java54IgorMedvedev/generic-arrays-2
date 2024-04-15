@@ -1,7 +1,6 @@
 package telran.employees;
 
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -37,15 +36,17 @@ public class Company implements Iterable<Employee>{
 		return result;
 	}
 	public int getDepartmentBudget(String department) {
-	    int result = 0;
-	    for (Employee emp : employees) {
-	        if (emp.getDepartment().equals(department)) {
-	            result += emp.computeSalary();
-	        }
-	    }
-	    return result;
+		
+		//returns sum of salary values for all employees of a given department
+		//if employees of a given department don't exist, returns 0
+		int result = 0;
+		for(Employee empl: employees) {
+			if(empl.getDepartment().equals(department)) {
+				result += empl.computeSalary();
+			}
+		}
+		return result;
 	}
-
 	public Company(Employee[] employees) {
 		this.employees = Arrays.copy(employees);
 		Arrays.bubbleSort(this.employees);
@@ -56,13 +57,22 @@ public class Company implements Iterable<Employee>{
 		return new CompanyIterator();
 	}
 	public String[] getDepartments() {
-	    HashSet<String> departments = new HashSet<>();
-	    for (Employee emp : employees) {
-	        departments.add(emp.getDepartment());
-	    }
-	    return departments.toArray(new String[0]);
+		String [] departments = new String[0];
+		for(Employee empl: employees) {
+			String department = empl.getDepartment();
+			departments = insertToDepartments(departments, department);
+		}
+		return departments;
 	}
-
+	private String[] insertToDepartments(String[] departments, String department) {
+		String[] result = departments;
+		int index = Arrays.binarySearch(departments, department, String::compareTo);
+		if (index < 0) {
+			result = Arrays.insert(departments, -(index + 1), department);
+		}
+		return result;
+		
+	}
 	private class CompanyIterator implements Iterator<Employee> {
 		int currentIndex = 0;
 		//iterating all employees in the ascending order of the ID values

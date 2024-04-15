@@ -1,15 +1,17 @@
 package telran.employees;
 
 public class Manager extends Employee {
-	private double factor;
+    float factor;
 
-    public Manager(long id, int basicSalary, String department, double factor) {
-        super(id, basicSalary, department);
-        this.factor = factor;
-    }
-
+	public Manager(long id, int basicSalary, String department, float factor) {
+		super(id, basicSalary, department);
+		this.factor = factor;
+	}
     @Override
     public int computeSalary() {
-        return (int) (getBasicSalary() * factor);
+    	return Math.round(super.computeSalary() * factor);
     }
+	
+	
+
 }
