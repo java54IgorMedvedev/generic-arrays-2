@@ -1,9 +1,10 @@
 package telran.employees;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-
+import java.util.List;
 import telran.util.Arrays;
 //SO far we don't consider optimization
 public class Company implements Iterable<Employee>{
@@ -72,6 +73,23 @@ public class Company implements Iterable<Employee>{
 		}
 		return result;
 		
+	}
+	public Manager[] getManagersWithMostFactor() {
+		float maxFactor = 0;
+        ArrayList<Manager> maxFactorManagers = new ArrayList<>();
+        for (Employee emp : employees) {
+            if (emp instanceof Manager) {
+                Manager manager = (Manager) emp;
+                if (manager.factor > maxFactor) {
+                    maxFactor = manager.factor;
+                    maxFactorManagers.clear();
+                }
+                if (manager.factor == maxFactor) {
+                    maxFactorManagers.add(manager);
+                }
+            }
+        }
+        return maxFactorManagers.toArray(new Manager[0]);
 	}
 	private class CompanyIterator implements Iterator<Employee> {
 		int currentIndex = 0;

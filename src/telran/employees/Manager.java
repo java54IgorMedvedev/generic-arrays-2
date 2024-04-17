@@ -1,7 +1,7 @@
 package telran.employees;
 
 public class Manager extends Employee {
-    float factor;
+    public float factor;
 
 	public Manager(long id, int basicSalary, String department, float factor) {
 		super(id, basicSalary, department);
