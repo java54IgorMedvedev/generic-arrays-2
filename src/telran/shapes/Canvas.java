@@ -36,19 +36,15 @@ public class Canvas extends Shape implements Iterable<Shape>{
 		}
 		shapes = Arrays.add(shapes, shape);
 	}
-	public void removeShape(long id) {
-	    int index = Arrays.indexOf(shapes, new Shape(id) {
-	        @Override
-	        public int square() { return 0; }
-	        @Override
-	        public int perimeter() { return 0; }
-	    });
-	    if (index == -1) {
-	        throw new ShapeNotFoundException(id); 
-	    }
-	    shapes = Arrays.removeIf(shapes, s -> s.getId() == id);
+	public Shape removeShape(long id) {
+		int removedIndex = Arrays.indexOf(shapes, new Canvas(id));
+		if (removedIndex < 0) {
+			throw new ShapeNotFoundException(id);
+		}
+		Shape removedShape = shapes[removedIndex];
+		shapes = Arrays.removeIf(shapes, s -> s.getId() == id);
+		return removedShape;
 	}
-
 	@Override
 	public Iterator<Shape> iterator() {
 		return new CanvasIterator();
